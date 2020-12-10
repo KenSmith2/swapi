@@ -1,28 +1,56 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<div id="example-2">
+  App Started
+  <hr>
+  <button v-on:click="getData(1)">1</button>
+  <button v-on:click="getData(2)">2</button>
+  <button v-on:click="getData(3)">3</button>
+  <hr>
+  <form>
+  <select v-model="value" v-on:click="getData(value)" class="form-control">
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+  </select>
+  </form>
+
+  <form v-on:submit.prevent v-on:click="getData(value)">
+    <input type="text" v-model="value">
+    
+    <button>Enter</button>
+  </form>
+  <div>{{ fullName }}</div>
+  <div>{{ fullHeight }}</div>
+</div>
 </template>
 
+
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios'
+let fullName = ''
+let fullHeight = ''
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+
+ methods: {
+      getData (value) {
+            axios
+              .get(`https://swapi.dev/api/people/${value}/`)
+              .then((result) => {
+                this.fullName = result.data.name
+                this.fullHeight = result.data.height
+              })
+      }
+    },
+
+  data() {
+//let fullName = 'Name Here'
+    return {
+      value: '',
+      fullName: fullName,
+      fullHeight: fullHeight,
+    };
+  },
+};
+</script>
